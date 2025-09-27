@@ -1,0 +1,70 @@
+{% extends "faculty/basefaculty.html" %}
+
+{% block content %}
+<div class="container-fluid px-3 px-md-5 mt-4">
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+  {% endwith %}
+
+  <!-- Welcome Header -->
+  <div class="text-center mb-5">
+      <h1 class="text-primary">Welcome {{ faculty.name }}</h1>
+      <h4 class="text-muted">Faculty Dashboard</h4>
+  </div>
+
+  {% if assigned_courses %}
+  <div class="row g-4">
+      {% for course in assigned_courses %}
+      <div class="col-sm-6 col-md-4">
+          <div class="card shadow-sm rounded-4 h-100 hover-card">
+              <div class="card-body d-flex flex-column justify-content-between">
+                  <h5 class="card-title">{{ course }}</h5>
+                  <a href="{{ url_for('faculty.view_details') }}" class="btn btn-primary mt-3 btn-sm btn-md btn-lg">View Details</a>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+  {% else %}
+      <p class="text-center text-muted mt-3">No courses assigned yet.</p>
+  {% endif %}
+
+</div>
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .hover-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .card-title {
+        font-weight: 600;
+        color: #333;
+    }
+
+    @media (max-width: 576px) {
+        .btn {
+            font-size: 0.85rem;
+            padding: 0.35rem 0.7rem;
+        }
+        .card-title {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+{% endblock %}

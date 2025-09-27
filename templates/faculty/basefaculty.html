@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons (for person icon) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Bootstrap Bundle JS (with Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <title>{% block title %}Faculty Home Page{% endblock %}</title>
+  {% block head %}{% endblock %}
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+      padding: 0.5rem 1rem;
+    }
+
+    .navbar-text {
+      font-size: 0.9rem;
+    }
+
+    .rounded-profile {
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 576px) {
+      .navbar-nav .nav-item .nav-link {
+        font-size: 0.85rem;
+      }
+      .navbar-text {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand fw-bold text-white" href="{{ url_for('faculty.faculty_dashboard') }}">Student Management App</a>
+
+    <!-- Toggler/collapsible Button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#facultyNavbar"
+      aria-controls="facultyNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="facultyNavbar">
+      <!-- Left Nav Items -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="{{ url_for('faculty.faculty_dashboard') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('faculty.attendance') }}">Manage Attendance</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('faculty.marks') }}">Manage Marks</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More Options</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('faculty.view_attendance') }}">View Attendance</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('faculty.view_marks') }}">View Marks</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('faculty.marksheet_select') }}">Marksheet</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Right Nav Items -->
+      <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
+        <li class="nav-item d-flex align-items-center me-2">
+          <a href="{{ url_for('faculty.profile') }}" title="Edit Profile">
+            <img src="{{ url_for('static', filename='images/avtar.png') }}" alt="Edit Profile"
+              class="rounded-pill rounded-profile">
+          </a>
+          <span class="navbar-text text-white px-2 fw-semibold">{{ faculty.name }}</span>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container-fluid px-3 px-md-5 mt-4">
+    {% block content %}{% endblock %}
+  </div>
+
+</body>
+
+</html>

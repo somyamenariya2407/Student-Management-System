@@ -1,0 +1,39 @@
+{% extends "faculty/basefaculty.html" %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4" style="color:#0d6efd;">Course Details</h2>
+
+    <div class="card shadow-sm p-3 mb-4">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-3">Syllabus PDF</h5>
+            <div class="d-flex justify-content-center">
+                <embed src="{{ url_for('static', filename='images/syllabus.pdf') }}" 
+                       type="application/pdf" width="100%" height="600px" class="border rounded shadow-sm"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{{ url_for('faculty.faculty_dashboard') }}" class="btn btn-secondary btn-lg">
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+        background-color: #ffffff;
+        border-radius: 1rem;
+    }
+    embed {
+        border-radius: 0.5rem;
+    }
+</style>
+{% endblock %}

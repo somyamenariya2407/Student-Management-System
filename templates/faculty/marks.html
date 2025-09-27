@@ -1,0 +1,107 @@
+{% extends "faculty/basefaculty.html" %}
+
+{% block title %}Marks Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3 px-md-5 mt-4">
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+  {% endwith %}
+
+  <h2 class="text-center mb-4 text-primary">Marks Management</h2>
+
+  <!-- Step 1: Select Course -->
+  {% if not selected_course %}
+  <h4 class="mb-3">Select a Course</h4>
+  <div class="d-flex flex-wrap gap-2 mb-4 justify-content-center">
+      {% for course in assigned_courses %}
+      <a href="{{ url_for('faculty.marks', course=course) }}" class="btn btn-outline-primary btn-sm btn-md btn-lg">{{ course }}</a>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Step 2: Enter Marks -->
+  {% if selected_course %}
+  <div class="card shadow-sm rounded-4 p-3 p-md-4 mb-4">
+      <h3 class="text-center mb-3">Enter Marks for {{ selected_course }}</h3>
+
+      <form method="POST">
+          <div class="table-responsive" style="max-height: 450px; overflow-y:auto;">
+              <table class="table table-bordered table-striped mb-0">
+                  <thead class="table-dark sticky-top text-center">
+                      <tr>
+                          <th>Name</th>
+                          <th>Roll No</th>
+                          <th>Marks Obtained</th>
+                          <th>Total Marks</th>
+                      </tr>
+                  </thead>
+                  <tbody class="text-center">
+                      {% for student in students %}
+                      <tr>
+                          <td>{{ student.name }}</td>
+                          <td>{{ student.roll_number }}</td>
+                          <td>
+                              <input type="number" name="marks_{{ student.id }}" class="form-control"
+                                     value="{{ marks_dict.get(student.id).marks_obtained if marks_dict.get(student.id) else '' }}" max="100">
+                          </td>
+                          <td>
+                              <input type="number" name="total_{{ student.id }}" class="form-control" value="100" readonly>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+
+          <div class="d-flex justify-content-end mt-3 flex-wrap gap-2">
+              <button type="submit" class="btn btn-success btn-lg">Save Marks</button>
+          </div>
+      </form>
+
+      <div class="text-center mt-3 d-flex flex-wrap justify-content-center gap-2">
+          <a href="{{ url_for('faculty.view_marks', course=selected_course) }}" class="btn btn-secondary btn-lg">View Marks</a>
+          <a href="{{ url_for('faculty.marks') }}" class="btn btn-secondary btn-lg">Back</a>
+      </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+        background-color: #ffffff;
+    }
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: #fff;
+        border-color: #0d6efd;
+    }
+    @media (max-width: 576px) {
+        .btn {
+            font-size: 0.85rem;
+            padding: 0.35rem 0.7rem;
+        }
+        .table {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+{% endblock %}

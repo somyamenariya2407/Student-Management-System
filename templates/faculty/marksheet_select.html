@@ -1,0 +1,94 @@
+{% extends "faculty/basefaculty.html" %}
+
+{% block content %}
+<div class="container-fluid px-3 px-md-5 mt-4">
+
+    <h2 class="text-center mb-4 text-primary">View Marksheet</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Step 1: Semester Selection -->
+    {% if not selected_sem %}
+        <h4 class="text-center mb-3">Select Semester</h4>
+        <div class="d-flex flex-wrap gap-2 justify-content-center">
+            {% for sem in semesters %}
+                <a href="{{ url_for('faculty.marksheet_select', semester=sem) }}" class="btn btn-outline-primary btn-sm btn-md btn-lg shadow-sm">
+                    Semester {{ sem }}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Step 2: Show Students of Selected Semester -->
+    {% if selected_sem %}
+        <h4 class="mb-3 text-center">Students - Semester {{ selected_sem }}</h4>
+
+        {% if students_list %}
+        <div class="card shadow-sm p-3">
+            <div class="table-responsive" style="max-height: 450px; overflow-y: auto; border: 1px solid #dee2e6;">
+                <table class="table table-bordered table-striped mb-0">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Roll No</th>
+                            <th>Name</th>
+                            <th>View Marksheet</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {% for stu in students_list %}
+                        <tr>
+                            <td>{{ stu.roll_number }}</td>
+                            <td>{{ stu.name }}</td>
+                            <td>
+                                <a href="{{ url_for('faculty.marksheet', student_id=stu.id) }}" 
+                                   class="btn btn-success btn-sm btn-md btn-lg">View Marksheet</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+            <p class="text-center text-danger mt-3">No students found for this semester.</p>
+        {% endif %}
+
+        <div class="mt-4 text-center">
+            <a href="{{ url_for('faculty.marksheet_select') }}" class="btn btn-secondary btn-lg">Back to Semester Selection</a>
+        </div>
+    {% endif %}
+
+</div>
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+        background-color: #ffffff;
+        border-radius: 1rem;
+    }
+    .btn-lg {
+        min-width: 140px;
+    }
+    @media (max-width: 576px) {
+        .btn {
+            font-size: 0.85rem;
+            padding: 0.35rem 0.7rem;
+        }
+        .table {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+{% endblock %}

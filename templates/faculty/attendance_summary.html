@@ -1,0 +1,71 @@
+{% extends "faculty/basefaculty.html" %}
+{% block content %}
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4" style="color:#0d6efd;">Attendance Summary</h2>
+
+    <!-- Selection Form -->
+    <div class="card shadow-sm rounded-4 p-4 mb-4">
+        <form method="POST">
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <label for="course" class="form-label">Select Course:</label>
+                    <select name="course" id="course" class="form-select" required>
+                        <option value="">--Select--</option>
+                        {% for course in assigned_courses %}
+                            <option value="{{ course }}" {% if selected_course==course %}selected{% endif %}>{{ course }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+                    <label for="attendance_date" class="form-label">Select Date:</label>
+                    <input type="date" id="attendance_date" name="attendance_date"
+                           class="form-control" value="{{ selected_date if selected_date else '' }}" required>
+                </div>
+
+                <div class="col-md-4 col-sm-12 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">View Summary</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Summary Table -->
+    {% if attendance_summary %}
+    <div class="card shadow-sm rounded-4 p-3 mb-4">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mb-0 text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Roll No</th>
+                        <th>Present Days</th>
+                        <th>Total Days</th>
+                        <th>Attendance %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in attendance_summary %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.roll_number }}</td>
+                        <td>{{ row.present_days }}</td>
+                        <td>{{ row.total_days }}</td>
+                        <td>{{ row.percentage }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% elif selected_course and selected_date %}
+        <p class="text-center text-danger mt-3">No attendance records found.</p>
+    {% endif %}
+
+    <div class="d-flex flex-wrap justify-content-center mt-3 gap-3">
+        <a href="{{ url_for('faculty.view_attendance') }}" class="btn btn-secondary btn-lg">Back to Attendance Page</a>
+        <a href="{{ url_for('faculty.faculty_dashboard') }}" class="btn btn-secondary btn-lg">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
